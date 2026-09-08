@@ -378,3 +378,152 @@ CREATE TABLE payment (
         )
 );
 
+INSERT INTO genre
+(genre_name)
+VALUES
+('Action'),
+('Drama'),
+('Sci-Fi'),
+('Adventure');
+
+
+INSERT INTO movie
+(title, duration_minutes, language, release_date, certificate, rating, synopsis)
+VALUES
+('The Martian', 144, 'English', '2015-10-02', 'UA', 8.0,
+ 'An astronaut stranded on Mars uses his scientific knowledge and determination to survive and find a way back home.'),
+
+('Project Hail Mary', 150, 'English', '2026-03-20', 'UA', 8.5,
+ 'A lone astronaut awakens on a desperate mission to save Earth and uncover the mystery threatening humanity.'),
+
+('Gran Turismo', 134, 'English', '2023-08-25', 'UA', 7.1,
+ 'A skilled gamer gets the opportunity to turn his virtual racing abilities into a real-world motorsport career.'),
+
+('Spider-Man: Brand New Day', 140, 'English', '2026-07-31', 'UA', 8.2,
+ 'Spider-Man faces a new chapter of challenges and adventures as he protects his city from new threats.');
+
+INSERT INTO movie_genre
+(movie_id, genre_id)
+VALUES
+(1, 9),   -- The Martian -> Sci-Fi
+(1, 8),   -- The Martian -> Drama
+
+(2, 9),   -- Project Hail Mary -> Sci-Fi
+(2, 10),  -- Project Hail Mary -> Adventure
+
+(3, 7),   -- Gran Turismo -> Action
+(3, 8),   -- Gran Turismo -> Drama
+
+(4, 7),   -- Spider-Man: Brand New Day -> Action
+(4, 9);   -- Spider-Man: Brand New Day -> Sci-Fi
+
+INSERT INTO theater
+(theater_name, city, address, contact_no)
+VALUES
+('CineSphere Central', 'Hyderabad', 'Banjara Hills Road No. 12', '9876543210'),
+('CineSphere Galleria', 'Hyderabad', 'Hitech City Main Road', '9876543211');
+
+INSERT INTO screen
+(theater_id, screen_name, screen_type, capacity)
+VALUES
+(1, 'Screen 1', 'IMAX', 6),
+(1, 'Screen 2', 'STANDARD', 6),
+(2, 'Screen 1', '3D', 6);
+
+INSERT INTO seat
+(screen_id, row_label, seat_number, seat_type)
+VALUES
+-- Screen 1, Theater 1
+(1, 'A', 1, 'REGULAR'),
+(1, 'A', 2, 'REGULAR'),
+(1, 'A', 3, 'PREMIUM'),
+(1, 'B', 1, 'REGULAR'),
+(1, 'B', 2, 'REGULAR'),
+(1, 'B', 3, 'PREMIUM'),
+
+-- Screen 2, Theater 1
+(2, 'A', 1, 'REGULAR'),
+(2, 'A', 2, 'REGULAR'),
+(2, 'A', 3, 'PREMIUM'),
+(2, 'B', 1, 'REGULAR'),
+(2, 'B', 2, 'REGULAR'),
+(2, 'B', 3, 'PREMIUM'),
+
+-- Screen 1, Theater 2
+(3, 'A', 1, 'REGULAR'),
+(3, 'A', 2, 'REGULAR'),
+(3, 'A', 3, 'PREMIUM'),
+(3, 'B', 1, 'REGULAR'),
+(3, 'B', 2, 'REGULAR'),
+(3, 'B', 3, 'PREMIUM');
+
+
+INSERT INTO slot
+(slot_name, start_time, end_time)
+VALUES
+('Morning', '10:00:00', '12:30:00'),
+('Matinee', '13:00:00', '15:30:00'),
+('Evening', '17:00:00', '19:30:00'),
+('Night', '20:00:00', '22:30:00');
+
+
+INSERT INTO screening
+(movie_id, screen_id, slot_id, screening_date, base_price, status)
+VALUES
+(1, 1, 1, '2026-09-10', 250.00, 'SCHEDULED'),
+(2, 1, 2, '2026-09-10', 250.00, 'SCHEDULED'),
+(3, 2, 3, '2026-09-10', 220.00, 'SCHEDULED'),
+(4, 3, 4, '2026-09-10', 250.00, 'SCHEDULED');
+
+INSERT INTO customer
+(full_name, email, phone, password_hash)
+VALUES
+('Arjun Mehta', 'arjun@example.com', '9000000001', 'hash_arjun_001'),
+('Priya Sharma', 'priya@example.com', '9000000002', 'hash_priya_002'),
+('Rahul Verma', 'rahul@example.com', '9000000003', 'hash_rahul_003');
+
+
+INSERT INTO booking
+(customer_id, screening_id, total_amount, booking_status)
+VALUES
+(1, 1, 500.00, 'CONFIRMED'),
+(2, 2, 250.00, 'CONFIRMED'),
+(3, 3, 440.00, 'CONFIRMED'),
+(1, 4, 250.00, 'CONFIRMED');
+
+INSERT INTO booking_seat
+(booking_id, seat_id, ticket_price, seat_status)
+VALUES
+-- Booking 1: A1 + A2 on Screening 1
+(1, 1, 250.00, 'BOOKED'),
+(1, 2, 250.00, 'BOOKED'),
+
+-- Booking 2: A3 on Screening 1
+(2, 3, 250.00, 'BOOKED'),
+
+-- Booking 3: A1 + A2 on Screening 2
+(3, 7, 220.00, 'BOOKED'),
+(3, 8, 220.00, 'BOOKED'),
+
+-- Booking 4: A1 on Screening 3
+(4, 13, 200.00, 'BOOKED');
+
+
+INSERT INTO ticket
+(booking_seat_id, qr_code, ticket_status)
+VALUES
+(1, 'QR-CS-0001', 'ACTIVE'),
+(2, 'QR-CS-0002', 'ACTIVE'),
+(3, 'QR-CS-0003', 'ACTIVE'),
+(4, 'QR-CS-0004', 'ACTIVE'),
+(5, 'QR-CS-0005', 'ACTIVE'),
+(6, 'QR-CS-0006', 'ACTIVE');
+
+
+INSERT INTO payment
+(booking_id, amount, payment_method, payment_status, transaction_reference)
+VALUES
+(1, 500.00, 'UPI', 'SUCCESS', 'TXN-CS-1001'),
+(2, 250.00, 'CARD', 'SUCCESS', 'TXN-CS-1002'),
+(3, 440.00, 'NET_BANKING', 'SUCCESS', 'TXN-CS-1003'),
+(4, 200.00, 'UPI', 'SUCCESS', 'TXN-CS-1004');
