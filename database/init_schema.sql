@@ -505,7 +505,7 @@ VALUES
 (3, 7, 220.00, 'BOOKED'),
 (3, 8, 220.00, 'BOOKED'),
 
--- Booking 4: A1 on Screening 3
+-- Booking 4: A1 on Screening 4
 (4, 13, 200.00, 'BOOKED');
 
 
