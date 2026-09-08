@@ -529,3 +529,72 @@ VALUES
 (4, 200.00, 'UPI', 'SUCCESS', 'TXN-CS-1004');
 
 -- DCL implementation next
+
+CREATE ROLE IF NOT EXISTS
+    'role_customer',
+    'role_staff',
+    'role_admin';
+
+GRANT SELECT ON cinesphere.movie
+TO 'role_customer';
+
+GRANT SELECT ON cinesphere.genre
+TO 'role_customer';
+
+GRANT SELECT ON cinesphere.theater
+TO 'role_customer';
+
+GRANT SELECT ON cinesphere.screen
+TO 'role_customer';
+
+GRANT SELECT ON cinesphere.screening
+TO 'role_customer';
+
+GRANT SELECT, INSERT ON cinesphere.booking
+TO 'role_customer';
+
+GRANT SELECT, INSERT ON cinesphere.booking_seat
+TO 'role_customer';
+
+GRANT SELECT ON cinesphere.ticket
+TO 'role_customer';
+
+GRANT SELECT, INSERT ON cinesphere.payment
+TO 'role_customer';
+
+
+GRANT SELECT, INSERT, UPDATE
+ON cinesphere.movie
+TO 'role_staff';
+
+GRANT SELECT, INSERT, UPDATE
+ON cinesphere.genre
+TO 'role_staff';
+
+GRANT SELECT, INSERT, UPDATE
+ON cinesphere.theater
+TO 'role_staff';
+
+GRANT SELECT, INSERT, UPDATE
+ON cinesphere.screen
+TO 'role_staff';
+
+GRANT SELECT, INSERT, UPDATE
+ON cinesphere.seat
+TO 'role_staff';
+
+GRANT SELECT, INSERT, UPDATE
+ON cinesphere.slot
+TO 'role_staff';
+
+GRANT SELECT, INSERT, UPDATE
+ON cinesphere.screening
+TO 'role_staff';
+
+
+GRANT ALL PRIVILEGES
+ON cinesphere.*
+TO 'role_admin';
+
+
+
