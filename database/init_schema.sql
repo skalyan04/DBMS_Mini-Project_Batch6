@@ -527,3 +527,5 @@ VALUES
 (2, 250.00, 'CARD', 'SUCCESS', 'TXN-CS-1002'),
 (3, 440.00, 'NET_BANKING', 'SUCCESS', 'TXN-CS-1003'),
 (4, 200.00, 'UPI', 'SUCCESS', 'TXN-CS-1004');
+
+-- DCL implementation next
