@@ -118,7 +118,22 @@ def create_booking():
         total=float(show['base_price'])*len(ids)
         cur.execute("INSERT INTO booking (customer_id,screening_id,booking_date,total_amount,booking_status) VALUES (%s,%s,NOW(),%s,'CONFIRMED')",(session['customer_id'],screening_id,total)); bid=cur.lastrowid
         for sid in ids:
-            cur.execute("INSERT INTO booking_seat (booking_id,seat_id,seat_status) VALUES (%s,%s,'BOOKED')",(bid,sid)); cur.execute("INSERT INTO ticket (booking_id,seat_id,ticket_status) VALUES (%s,%s,'ACTIVE')",(bid,sid))
+            cur.execute(
+                """
+                INSERT INTO booking_seat
+                    (booking_id, seat_id, ticket_price, seat_status)
+                VALUES (%s, %s, %s, 'BOOKED')
+                """,
+                (bid, sid, show['base_price'])
+            )
+            booking_seat_id = cur.lastrowid
+            cur.execute(
+                """
+                INSERT INTO ticket (booking_seat_id, ticket_status)
+                VALUES (%s, 'ACTIVE')
+                """,
+                (booking_seat_id,)
+            )
         cur.execute("INSERT INTO payment (booking_id,amount,payment_method,payment_status,transaction_ref,payment_date) VALUES (%s,%s,%s,'SUCCESS',%s,NOW())",(bid,total,method,f'DEMO-{bid}-{os.urandom(4).hex()}'))
         conn.commit(); return redirect(url_for('confirmation',booking_id=bid))
     except Exception:
