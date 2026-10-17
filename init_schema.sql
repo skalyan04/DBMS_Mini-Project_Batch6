@@ -39,7 +39,7 @@ INSERT INTO genre(genre_name) VALUES ('Action'),('Drama'),('Science Fiction'),('
 INSERT INTO movie(title,synopsis,language,duration_minutes,release_date,rating) VALUES
 ('The Martian','An astronaut stranded on Mars uses his scientific knowledge and determination to survive and find a way back home.','English',144,'2015-10-02','UA'),
 ('Project Hail Mary','A lone astronaut awakens on a desperate mission to save Earth and uncover the mystery threatening humanity.','English',150,'2026-03-20','UA'),
-('Gran Turismo','FA skilled gamer gets the opportunity to turn his virtual racing abilities into a real-world motorsport career.','English',134,'2023-08-25','UA'),
+('Gran Turismo','A skilled gamer gets the opportunity to turn his virtual racing abilities into a real-world motorsport career.','English',134,'2023-08-25','UA'),
 ('Spider-Man: Brand New Day','Spider-Man faces a new chapter of challenges and adventures as he protects his city from new threats.','English',140,'2026-07-31','UA');
 INSERT INTO movie_genre VALUES (1,1),(1,3),(2,2),(3,4),(4,1);
 INSERT INTO theater(theater_name,city) VALUES ('CineSphere Central','Hyderabad'),('CineSphere Riverside','Hyderabad');
