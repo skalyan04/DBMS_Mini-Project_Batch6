@@ -60,5 +60,3 @@ INSERT INTO customer(full_name,email,phone,password_hash) VALUES
 ('Arjun Kumar','arjun@example.com','9000000001','pbkdf2:sha256:600000$d13b68f68257a4f2$550380eac96b9472085fa342fd23cc3e6cc319f5f0a7605d118bca3162626a26'),
 ('Priya Sharma','priya@example.com','9000000002','pbkdf2:sha256:600000$d13b68f68257a4f2$550380eac96b9472085fa342fd23cc3e6cc319f5f0a7605d118bca3162626a26'),
 ('Rahul Verma','rahul@example.com','9000000003','pbkdf2:sha256:600000$d13b68f68257a4f2$550380eac96b9472085fa342fd23cc3e6cc319f5f0a7605d118bca3162626a26');
-
-
