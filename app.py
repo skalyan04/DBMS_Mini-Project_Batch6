@@ -161,15 +161,74 @@ def my_bookings():
     for b in bookings: b['seats']=query("SELECT se.row_label,se.seat_number FROM booking_seat bs JOIN seat se ON se.seat_id=bs.seat_id WHERE bs.booking_id=%s AND bs.seat_status='BOOKED' ORDER BY se.row_label,se.seat_number",(b['booking_id'],))
     return render_template('my_bookings.html',bookings=bookings)
 
-@app.route('/cancel-booking/<int:booking_id>',methods=['POST'])
+@app.route('/cancel-booking/<int:booking_id>', methods=['POST'])
 @login_required
 def cancel_booking(booking_id):
-    conn=db(); cur=conn.cursor()
+    conn = db()
+    cur = conn.cursor()
     try:
-        conn.start_transaction(); cur.execute("SELECT booking_status FROM booking WHERE booking_id=%s AND customer_id=%s FOR UPDATE",(booking_id,session['customer_id'])); b=cur.fetchone()
-        if not b or b[0]!='CONFIRMED': conn.rollback(); flash('This booking cannot be cancelled.'); return redirect(url_for('my_bookings'))
-        cur.execute("UPDATE booking SET booking_status='CANCELLED' WHERE booking_id=%s",(booking_id,)); cur.execute("UPDATE booking_seat SET seat_status='CANCELLED' WHERE booking_id=%s",(booking_id,)); cur.execute("UPDATE ticket SET ticket_status='CANCELLED' WHERE booking_id=%s",(booking_id,)); cur.execute("UPDATE payment SET payment_status='REFUNDED' WHERE booking_id=%s AND payment_status='SUCCESS'",(booking_id,)); conn.commit(); flash('Booking cancelled. Demo payment marked refunded.')
-    finally: cur.close(); conn.close()
+        conn.start_transaction()
+        cur.execute(
+            """
+            SELECT booking_status
+            FROM booking
+            WHERE booking_id = %s AND customer_id = %s
+            FOR UPDATE
+            """,
+            (booking_id, session['customer_id'])
+        )
+        b = cur.fetchone()
+        if not b or b[0] != 'CONFIRMED':
+            conn.rollback()
+            flash('This booking cannot be cancelled.')
+            return redirect(url_for('my_bookings'))
+        # Cancel the booking.
+        cur.execute(
+            """
+            UPDATE booking
+            SET booking_status = 'CANCELLED'
+            WHERE booking_id = %s
+            """,
+            (booking_id,)
+        )
+        # Release the booked seats.
+        cur.execute(
+            """
+            UPDATE booking_seat
+            SET seat_status = 'CANCELLED'
+            WHERE booking_id = %s
+            """,
+            (booking_id,)
+        )
+        # Cancel tickets through their booking-seat relationship.
+        cur.execute(
+            """
+            UPDATE ticket t
+            JOIN booking_seat bs
+                ON t.booking_seat_id = bs.booking_seat_id
+            SET t.ticket_status = 'CANCELLED'
+            WHERE bs.booking_id = %s
+            """,
+            (booking_id,)
+        )
+        # Mark the successful demo payment as refunded.
+        cur.execute(
+            """
+            UPDATE payment
+            SET payment_status = 'REFUNDED'
+            WHERE booking_id = %s
+              AND payment_status = 'SUCCESS'
+            """,
+            (booking_id,)
+        )
+        conn.commit()
+        flash('Booking cancelled. Demo payment marked refunded.')
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cur.close()
+        conn.close()
     return redirect(url_for('my_bookings'))
 
 if __name__=='__main__': app.run(host=os.getenv('FLASK_HOST','127.0.0.1'),port=int(os.getenv('FLASK_PORT','5000')),debug=os.getenv('FLASK_DEBUG','1')=='1')
