@@ -134,7 +134,12 @@ def create_booking():
                 """,
                 (booking_seat_id,)
             )
-        cur.execute("INSERT INTO payment (booking_id,amount,payment_method,payment_status,transaction_ref,payment_date) VALUES (%s,%s,%s,'SUCCESS',%s,NOW())",(bid,total,method,f'DEMO-{bid}-{os.urandom(4).hex()}'))
+        cur.execute("""
+        INSERT INTO payment
+        (booking_id, amount, payment_method, payment_status, transaction_reference)
+        VALUES (%s, %s, %s, 'SUCCESS', %s)
+        """,
+    (bid, total, method, f'DEMO-{bid}-{os.urandom(4).hex()}'))
         conn.commit(); return redirect(url_for('confirmation',booking_id=bid))
     except Exception:
         conn.rollback(); raise
