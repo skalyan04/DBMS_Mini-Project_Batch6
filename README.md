@@ -12,7 +12,7 @@ A Flask + MySQL DBMS mini-project with account registration/login, movie listing
    - Windows: `python -m venv .venv` then `.venv\\Scripts\\activate`
    - macOS/Linux: `python3 -m venv .venv` then `source .venv/bin/activate`
 3. Install dependencies: `pip install -r requirements.txt`
-4. Copy `.env.example` to `.env` and set your MySQL credentials and a strong `SECRET_KEY`.
+4. (Negligible) Copy `.env.example` to `.env` and set your MySQL credentials and a strong `SECRET_KEY`.
 5. Start the app: `python app.py`
 6. Visit http://127.0.0.1:5000
 
