@@ -1,4 +1,4 @@
---This will drop and recreate the Cinesphere database
+-- This will drop and recreate the Cinesphere database
 DROP DATABASE IF EXISTS cinesphere;
 CREATE DATABASE cinesphere CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE cinesphere;
